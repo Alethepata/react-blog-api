@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { BsTrash } from "react-icons/bs";
+import axios from "axios";
 
-function Form() {
+function Form({categories,tags}) {
     const dataDefault = {
         title: '',
         image:'',
@@ -12,30 +12,30 @@ function Form() {
         tags:[],
     } 
 
-    const categories = ['cibo', 'web', 'videogames', 'informatica']
-    const allTags = ['html', 'css', 'js', 'php']
+    const [post, setPost] = useState({})
 
-    const [blogs, setBlogs] = useState([]);
-    const [blogData, setBlogData] = useState(dataDefault);
+    const [postData, setPostData] = useState(dataDefault);
+
+    const addPost = async (url) => {
+        await axios.post(url, post);
+    }
 
     const handleTitle = (event) => {
         event.preventDefault();
 
-        setBlogs(array => ([...array, blogData]));
+        setPost(array => ([...array, postData]));
 
-        setBlogData(dataDefault);
-    }
+        addPost(`${apiBaseUrl}/posts`);
 
-    const deleteTitle = indexTitle => { 
-        setBlogs(blogs => blogs.filter((_, index) => indexTitle !== index))
+        setPostData(dataDefault);
     }
 
     const addData = (key, newData) => {
-        setBlogData(data => ({...data, [key]: newData}))
+        setPostData(data => ({...data, [key]: newData}))
     }
 
     const addTags = (tag) => {
-        const currentTag = blogData.tags;
+        const currentTag = postData.tags;
         const newTags = currentTag.includes(tag) ? currentTag.filter(element => element !== tag) : [...currentTag, tag];
         addData('tags', newTags)
     }
@@ -85,9 +85,9 @@ function Form() {
                             categories.map((category, index) => (
                                 <option
                                     key={`category_${index}`}
-                                    value={category}
+                                    value={category.name}
                                 >
-                                    {category}
+                                    {category.name}
                                 </option>
                             ))
                         }
@@ -96,16 +96,16 @@ function Form() {
 
                 <div className="check">
                     {
-                        allTags.map((tag, index) => (
+                        tags.map((tag, index) => (
                             <div key={`tag_${index}`}>
                                 <input
                                     id="tags"
                                     type="checkbox"
-                                    checked={blogData.tags.includes(tag)}
+                                    checked={postData.tags.includes(tag)}
                                     onChange={() => addTags(tag)}
                                 />
                                 <label htmlFor="tags">
-                                  {tag}
+                                  {tag.name}
                                 </label>
                             </div>
                         ))
@@ -126,47 +126,6 @@ function Form() {
 
                 <button>Invia</button>
             </form>
-            <div className="card-container">
-                {
-                    blogs.map((blog, index) => (
-                        <div key={`card_${index}`} className="card">
-
-                            <figure>
-                                <img src={blog.image} alt="" />
-                            </figure>
-
-                            <div className="text">
-                                
-                            <div className="title">
-                                    <h3>{blog.title}</h3>
-                                    {
-                                        blog.publish === true ||
-                                        <span>Bozza</span>
-                                    }
-                                <button onClick={() => deleteTitle(index)}><BsTrash /></button>
-                            </div>
-
-                            <div className="description">
-                                <p>{blog.description}</p>
-                            </div>
-
-                            <div className="category">
-                                <span>{blog.category}</span>
-                            </div>
-                                
-                            <div className="tags">
-                                {
-                                    blog.tags.map(tag => <span>{tag}</span>)
-                                }
-                            </div>
-
-                            </div>
-
-
-                        </div>
-                    ))
-                }
-            </div>
         </div>
     )
 }

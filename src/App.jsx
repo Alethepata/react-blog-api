@@ -39,6 +39,7 @@ function App() {
     <Form 
       categories={categories}
       tags={tags}
+      onCreate={getPosts(`${apiBaseUrl}/posts`)}
     />
   </>)
 }

@@ -2,7 +2,10 @@ import { useState } from 'react';
 
 import axios from "axios";
 
-function Form({categories,tags}) {
+const apiBaseUrl = import.meta.env.VITE_BASE_API_URL;
+
+
+function Form({categories,tags, onCreate}) {
     const dataDefault = {
         title: '',
         image:'',
@@ -12,22 +15,20 @@ function Form({categories,tags}) {
         tags:[],
     } 
 
-    const [post, setPost] = useState({})
-
     const [postData, setPostData] = useState(dataDefault);
 
-    const addPost = async (url) => {
-        await axios.post(url, post);
+    const addPost = async (url, data) => {
+        await axios.post(url, data);
     }
 
-    const handleTitle = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        setPost(array => ([...array, postData]));
-
-        addPost(`${apiBaseUrl}/posts`);
+        addPost(`${apiBaseUrl}/posts`, postData);
 
         setPostData(dataDefault);
+
+        onCreate();
     }
 
     const addData = (key, newData) => {
@@ -42,7 +43,7 @@ function Form({categories,tags}) {
     return (
         <div className="form">
             <h1>Form</h1>
-            <form onSubmit={handleTitle}>
+            <form onSubmit={handleSubmit}>
 
                 <div>
                     <label htmlFor="title">Titolo</label>

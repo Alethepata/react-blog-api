@@ -49,7 +49,7 @@ function Form({categories,tags}) {
                     <input
                         id="title"
                         type="text"
-                        value={blogData.title}
+                        value={postData.title}
                         onChange={event => addData('title', event.target.value)}
                     />
                 </div>
@@ -59,7 +59,7 @@ function Form({categories,tags}) {
                     <input
                         id="image"
                         type="text"
-                        value={blogData.image}
+                        value={postData.image}
                         onChange={event => addData('image', event.target.value)}
                     />
                 </div>
@@ -68,7 +68,7 @@ function Form({categories,tags}) {
                     <label htmlFor="description">Descrizione</label>
                     <textarea
                         id="description"
-                        value={blogData.description}
+                        value={postData.description}
                         onChange={event => addData('description', event.target.value)}
                     ></textarea>
                 </div>
@@ -77,7 +77,7 @@ function Form({categories,tags}) {
                 <label htmlFor="category">Scegli la categoria</label>
                     <select
                         id="category"
-                        value={blogData.category}
+                        value={postData.category}
                         onChange={event => addData('category', event.target.value)}
                     >
                         <option selected>Categoria</option>
@@ -116,7 +116,7 @@ function Form({categories,tags}) {
                     <input
                         id="publish"
                         type="checkbox"
-                        checked={blogData.publish}
+                        checked={postData.publish}
                         onChange={(event) => addData('publish', Boolean(event.target.checked))}
                     />
                     <label htmlFor="publish">
